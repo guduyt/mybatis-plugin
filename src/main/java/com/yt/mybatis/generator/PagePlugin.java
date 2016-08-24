@@ -69,7 +69,7 @@ public class PagePlugin extends PluginAdapter {
 
         XmlElement ifPageByElement=new XmlElement("if");
         ifPageByElement.addAttribute(new Attribute("test","page !=null"));
-        ifPageByElement.addElement(new TextElement("<![CDATA[LIMIT #{page.pageSize} OFFSET #{page.startRow}]]>"));
+        ifPageByElement.addElement(new TextElement("<![CDATA[LIMIT #{limit} OFFSET #{offset}]]>"));
         selectPageByExampleElement.addElement(ifPageByElement);
 
         document.getRootElement().addElement(selectPageByExampleElement);
@@ -81,7 +81,7 @@ public class PagePlugin extends PluginAdapter {
     public boolean sqlMapCountByExampleElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         String tableName=  introspectedTable.getTableConfiguration().getTableName();
 
-        TextElement selectElement=new TextElement("select count(1) from");
+        TextElement selectElement=new TextElement("select count(1) from ");
 
         XmlElement ifElement=new XmlElement("if");
         ifElement.addAttribute(new Attribute("test","distinct"));
@@ -90,10 +90,10 @@ public class PagePlugin extends PluginAdapter {
                 "          from  " +tableName+ "\n"+
                 "          <if test=\"_parameter != null\">\n" +
                 "              <include refid=\"Example_Where_Clause\" />\n" +
-                "          </if>) AS Count"));
+                "          </if>) AS c"));
 
         XmlElement ifDistinctElement=new XmlElement("if");
-        ifDistinctElement.addAttribute(new Attribute("test","distinct"));
+        ifDistinctElement.addAttribute(new Attribute("test","!distinct"));
         ifDistinctElement.addElement(new TextElement("        " +tableName+ "\n"+
                 "        <if test=\"_parameter != null\">\n" +
                 "          <include refid=\"Example_Where_Clause\" />\n" +
@@ -128,21 +128,30 @@ public class PagePlugin extends PluginAdapter {
         if(introspectedColumn.getActualColumnName()!=null &&introspectedColumn.getActualColumnName().length()>0) {
             field.addAnnotation("@Column(name=\""+introspectedColumn.getActualColumnName()+"\")");
         }
+
+        Iterator<IntrospectedColumn> iterator=introspectedTable.getPrimaryKeyColumns().iterator();
+        IntrospectedColumn primaryKeyColumn=null;
+        while (iterator.hasNext()){
+            primaryKeyColumn= iterator.next();
+        }
+        if(null!=primaryKeyColumn && introspectedColumn.getActualColumnName().equals(primaryKeyColumn.getActualColumnName()))  {
+            field.addAnnotation("@Id");
+        }
         return super.modelFieldGenerated(field, topLevelClass, introspectedColumn, introspectedTable, modelClassType);
     }
 
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         Set<FullyQualifiedJavaType> set=interfaze.getSuperInterfaceTypes();
-        Iterator iterator=set.iterator();
+        Iterator<FullyQualifiedJavaType> iterator=set.iterator();
 
         while (iterator.hasNext()){
-            FullyQualifiedJavaType fullyQualifiedJavaType=(FullyQualifiedJavaType)iterator.next();
+            FullyQualifiedJavaType fullyQualifiedJavaType=iterator.next();
              if(fullyQualifiedJavaType.getFullyQualifiedName().equals(BaseMapper.class.getName())){
                  if(introspectedTable.getPrimaryKeyColumns().size()!=1){
                        throw new RuntimeException("请确保数据表中只有一个主键字段，不支持联合主键") ;
                  }
-                 fullyQualifiedJavaType.addTypeArgument(((IntrospectedColumn)introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType());
+                 fullyQualifiedJavaType.addTypeArgument((introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType());
                  fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
                  fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getExampleType()));
              }

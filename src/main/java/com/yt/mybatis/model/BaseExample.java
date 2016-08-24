@@ -12,14 +12,40 @@ import com.yt.commons.Page;
  */
 public abstract class BaseExample {
 
+
+
+    protected Page page;
+
+    protected  int limit;
+
+    protected int offset;
+
     public Page getPage() {
         return page;
     }
 
     public void setPage(Page page) {
         this.page = page;
+        if(null!=this.page){
+            this.limit=this.page.getPageSize();
+            this.offset=this.page.getStartRow();
+        }
     }
 
-    protected Page page;
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
 }
