@@ -12,6 +12,10 @@ mybatis的基于mysql的分页插件和mapping插件
 1.下载源码，使用maven打包生成jar。
 
 2.maven插件包配置：
+          
+          ......
+          
+          <!--添加插件使用到Maven -->
           <plugins>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
@@ -43,6 +47,7 @@ mybatis的基于mysql的分页插件和mapping插件
                 </dependencies>
             </plugin>
           </plugins>
+          
   2.generatorConfig.xml配置：
   
           ......
