@@ -10,6 +10,7 @@
 在基于spring springmvc mybatis的框架中使用。
 
 插件使用配置：
+
 	1.下载源码，使用maven打包生成jar。
 
 	2.maven插件包配置pom.xml：
