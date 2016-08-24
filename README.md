@@ -1,12 +1,16 @@
 
 mybatis的基于mysql的分页插件和mapping插件
 
+
 目前只是在mybatis的mapper.xml中添加了一个selectPageByExample方法，用于分页查询。
+
 可以扩展为通用的mapper，及其他数据库分页支持。
 
 在基于spring springmvc mybatis的框架中使用。
+
 插件使用配置：
 1.下载源码，使用maven打包生成jar。
+
 2.maven插件包配置：
           <plugins>
             <plugin>
