@@ -62,6 +62,7 @@ public class Page implements Serializable {
         init();
     }
 
+    /*计算总页数、开始行、结束行*/
     private void init(){
         this.totalPage= (this.getTotalRow()%this.pageSize)==0?((int)Math.floor(this.getTotalRow()/this.pageSize)):((int)Math.floor(this.getTotalRow()/this.pageSize)+1);
         this.startRow=this.currentPage>0?(this.currentPage-1)*this.pageSize:0;

@@ -33,6 +33,7 @@ public class PagePlugin extends PluginAdapter {
         return true;
     }
 
+    /*在生成的XML添加一个分页查询的方法*/
     @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
 
@@ -77,6 +78,7 @@ public class PagePlugin extends PluginAdapter {
         return super.sqlMapDocumentGenerated(document,introspectedTable);
     }
 
+    /*优化统计数据总条数的查询方法*/
     @Override
     public boolean sqlMapCountByExampleElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         String tableName=  introspectedTable.getTableConfiguration().getTableName();
@@ -107,6 +109,7 @@ public class PagePlugin extends PluginAdapter {
         return true;
     }
 
+    /*让所有生成的modelExample类文件继承BaseExample类*/
     @Override
     public boolean modelExampleClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         topLevelClass.setSuperClass(BaseExample.class.getName());

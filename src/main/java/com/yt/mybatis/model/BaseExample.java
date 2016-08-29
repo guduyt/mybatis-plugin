@@ -24,8 +24,17 @@ public abstract class BaseExample {
         return page;
     }
 
+    /*设置分页信息到limit、offset*/
     public void setPage(Page page) {
         this.page = page;
+        if(null!=this.page){
+            this.limit=this.page.getPageSize();
+            this.offset=this.page.getStartRow();
+        }
+    }
+
+    /*当Page信息有变动后，调用这个方法重新设置分页信息到limit、offset*/
+    public void resetPage(){
         if(null!=this.page){
             this.limit=this.page.getPageSize();
             this.offset=this.page.getStartRow();

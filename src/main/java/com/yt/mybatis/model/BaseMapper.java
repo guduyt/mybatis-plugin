@@ -11,5 +11,10 @@ import java.util.List;
  * @date 2016/8/22 9:14
  */
 public interface BaseMapper<Pk extends Serializable,Mode extends BaseModel,Example extends BaseExample> {
+
+    /*分页查询使用*/
     List<Mode> selectPageByExample(Example example);
+
+    /*批量插入使用*/
+    int insert(Mode record);
 }
