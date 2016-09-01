@@ -15,6 +15,9 @@ public interface BaseMapper<Pk extends Serializable,Mode extends BaseModel,Examp
     /*分页查询使用*/
     List<Mode> selectPageByExample(Example example);
 
-    /*批量插入使用*/
+    /*单条插入使用*/
     int insert(Mode record);
+
+	/*批量插入使用*/
+    int insertBatch(List<Mode> list);
 }
