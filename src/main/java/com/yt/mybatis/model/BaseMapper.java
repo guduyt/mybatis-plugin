@@ -1,5 +1,7 @@
 package com.yt.mybatis.model;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,9 +17,28 @@ public interface BaseMapper<Pk extends Serializable,Mode extends BaseModel,Examp
     /*分页查询使用*/
     List<Mode> selectPageByExample(Example example);
 
-    /*单条插入使用*/
-    int insert(Mode record);
-
 	/*批量插入使用*/
     int insertBatch(List<Mode> list);
+
+    int countByExample(Example example);
+
+    int deleteByExample(Example example);
+
+    int deleteByPrimaryKey(Pk pk);
+
+    int insert(Mode record);
+
+    int insertSelective(Mode record);
+
+    List<Mode> selectByExample(Example example);
+
+    Mode selectByPrimaryKey(Pk pk);
+
+    int updateByExampleSelective(@Param("record") Mode record, @Param("example") Example example);
+
+    int updateByExample(@Param("record") Mode record, @Param("example") Example example);
+
+    int updateByPrimaryKeySelective(Mode record);
+
+    int updateByPrimaryKey(Mode record);
 }

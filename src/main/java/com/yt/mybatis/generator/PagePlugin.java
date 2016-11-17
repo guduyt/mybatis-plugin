@@ -3,13 +3,11 @@ package com.yt.mybatis.generator;
 
 import com.yt.mybatis.model.BaseExample;
 import com.yt.mybatis.model.BaseMapper;
+import com.yt.mybatis.model.BaseModel;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
@@ -112,18 +110,20 @@ public class PagePlugin extends PluginAdapter {
     /*让所有生成的modelExample类文件继承BaseExample类*/
     @Override
     public boolean modelExampleClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        topLevelClass.setSuperClass(BaseExample.class.getName());
         topLevelClass.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseExample"));
+        topLevelClass.setSuperClass(BaseExample.class.getName());
         return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
     }
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseModel"));
+        topLevelClass.setSuperClass(BaseModel.class.getName());
         topLevelClass.addImportedType("javax.persistence.*");
         String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
         topLevelClass.addAnnotation("@Entity");
         topLevelClass.addAnnotation("@Table(name = \"" + tableName + "\")");
-        return true;
+        return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
     }
 
     @Override
@@ -145,21 +145,150 @@ public class PagePlugin extends PluginAdapter {
 
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        interfaze.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseMapper")); ;
+        interfaze.addSuperInterface(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseMapper"));
         Set<FullyQualifiedJavaType> set=interfaze.getSuperInterfaceTypes();
         Iterator<FullyQualifiedJavaType> iterator=set.iterator();
-
         while (iterator.hasNext()){
             FullyQualifiedJavaType fullyQualifiedJavaType=iterator.next();
-             if(fullyQualifiedJavaType.getFullyQualifiedName().equals(BaseMapper.class.getName())){
-                 if(introspectedTable.getPrimaryKeyColumns().size()!=1){
-                       throw new RuntimeException("请确保数据表中只有一个主键字段，不支持联合主键") ;
-                 }
-                 fullyQualifiedJavaType.addTypeArgument((introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType());
-                 fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
-                 fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getExampleType()));
-             }
+            if(fullyQualifiedJavaType.getFullyQualifiedName().equals(BaseMapper.class.getName())){
+                if(introspectedTable.getPrimaryKeyColumns().size()!=1){
+                    throw new RuntimeException("请确保数据表中只有一个主键字段，不支持联合主键") ;
+                }
+                FullyQualifiedJavaType type=(introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType();
+                interfaze.addImportedType(type);
+                fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(type.getShortName()));
+
+                type=new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
+                interfaze.addImportedType(type);
+                fullyQualifiedJavaType.addTypeArgument(type);
+
+                type=new FullyQualifiedJavaType(introspectedTable.getExampleType());
+                interfaze.addImportedType(type);
+                fullyQualifiedJavaType.addTypeArgument(type);
+            }
         }
         return true;
+    }
+    public boolean clientCountByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientCountByExampleMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientDeleteByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientDeleteByExampleMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientInsertMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientInsertMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientInsertSelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientInsertSelectiveMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+
+    public boolean clientUpdateByExampleSelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByExampleSelectiveMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByExampleWithBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByExampleWithBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByExampleWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByExampleWithoutBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByExampleWithBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByExampleWithBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByExampleWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByExampleWithoutBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectAllMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectAllMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        return false;
     }
 
 }
