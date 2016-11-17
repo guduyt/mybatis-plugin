@@ -14,9 +14,22 @@
 	1.下载源码，使用maven打包生成jar。
 
 	2.maven插件包配置pom.xml：
-          
+
+          <!--mybatis-plugin插件依赖-->
+          <dependencies>
+                 <dependency>
+                      <groupId>com.yt</groupId>
+                      <artifactId>mybatis-plugin</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                 </dependency>
+                 <dependency>
+                     <groupId>javax.persistence</groupId>
+                     <artifactId>persistence-api</artifactId>
+                     <version>1.0.2</version>
+                 </dependency>
+          </dependencies>
           ......
-          
+
           <!--添加插件使用到Maven -->
           <plugins>
             <plugin>
@@ -59,16 +72,10 @@
           
            <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">            
 				<!--其他配置省略；-->
-				
-				<!-- 设置根对象为com.yt.mybatis.model.BaseModel，那么生成的keyClass或者recordClass会继承这个类；；-->
-				  <property name="rootClass" value="com.yt.mybatis.model.BaseModel"></property>
 			</javaModelGenerator>
         
 			<javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
 				 <!--其他配置省略；-->
-				 
-				<!-- 设置父接口为com.yt.mybatis.model.BaseMapper，实现自定义的操作数据库的方法-->
-				<property name="rootInterface" value="com.yt.mybatis.model.BaseMapper"/>
 			</javaClientGenerator>
         ......
 	</generatorConfiguration>
