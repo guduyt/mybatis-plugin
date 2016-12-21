@@ -66,10 +66,7 @@ public class PagePlugin extends PluginAdapter {
         ifOrderByElement.addElement(new TextElement(" order by ${orderByClause} "));
         selectPageByExampleElement.addElement(ifOrderByElement);
 
-        XmlElement ifPageByElement=new XmlElement("if");
-        ifPageByElement.addAttribute(new Attribute("test","page !=null"));
-        ifPageByElement.addElement(new TextElement("<![CDATA[LIMIT #{limit} OFFSET #{offset}]]>"));
-        selectPageByExampleElement.addElement(ifPageByElement);
+        selectPageByExampleElement.addElement(new TextElement("<![CDATA[LIMIT #{limit} OFFSET #{offset}]]>"));
 
         document.getRootElement().addElement(selectPageByExampleElement);
 
@@ -155,6 +152,7 @@ public class PagePlugin extends PluginAdapter {
                 if(introspectedTable.getPrimaryKeyColumns().size()!=1){
                     throw new RuntimeException("请确保数据表中只有一个主键字段，不支持联合主键") ;
                 }
+
                 FullyQualifiedJavaType type=(introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType();
                 interfaze.addImportedType(type);
                 fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(type.getShortName()));

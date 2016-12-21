@@ -1,6 +1,6 @@
 com\yt\mybatis\generator\BatchPlugin.class
 com\yt\commons\Page.class
 com\yt\mybatis\model\BaseMapper.class
-com\yt\mybatis\generator\PagePlugin.class
 com\yt\mybatis\model\BaseExample.class
 com\yt\mybatis\model\BaseModel.class
+com\yt\mybatis\generator\PagePlugin.class

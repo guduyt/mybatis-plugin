@@ -1,8 +1,6 @@
 package com.yt.mybatis.model;
 
 
-import com.yt.commons.Page;
-
 /**
  * BaseExample
  *
@@ -12,34 +10,69 @@ import com.yt.commons.Page;
  */
 public abstract class BaseExample {
 
+    // 页大小
+    private int pageSize=10;
 
+    // 当前页
+    private int currentPage=1;
 
-    protected Page page;
+    // 起始行
+    private int startRow;
+
+    // 结束行
+    private int endRow;
 
     protected  int limit;
 
     protected int offset;
 
-    public Page getPage() {
-        return page;
+    private void init() {
+        this.startRow = this.currentPage > 0 ? (this.currentPage - 1) * this.pageSize : 0;
+        this.endRow = this.currentPage > 0 ? (this.currentPage) * this.pageSize : this.pageSize;
+        this.limit = this.pageSize;
+        this.offset = this.startRow;
     }
 
-    /*设置分页信息到limit、offset*/
-    public void setPage(Page page) {
-        this.page = page;
-        if(null!=this.page){
-            this.limit=this.page.getPageSize();
-            this.offset=this.page.getStartRow();
-        }
+    public int getPageSize() {
+        return pageSize;
     }
 
-    /*当Page信息有变动后，调用这个方法重新设置分页信息到limit、offset*/
-    public void resetPage(){
-        if(null!=this.page){
-            this.limit=this.page.getPageSize();
-            this.offset=this.page.getStartRow();
+    public void setPageSize(int pageSize) {
+        if (pageSize < 0) {
+            pageSize = 10;
         }
+        this.pageSize = pageSize;
+        init();
     }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+        this.currentPage = currentPage;
+        init();
+    }
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
+
+    public int getEndRow() {
+        return endRow;
+    }
+
+    public void setEndRow(int endRow) {
+        this.endRow = endRow;
+    }
+
 
     public int getLimit() {
         return limit;
