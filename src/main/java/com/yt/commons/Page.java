@@ -1,9 +1,8 @@
 package com.yt.commons;
 
-import com.yt.mybatis.model.BaseModel;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
  * @version 1.0.0
  * @date 2016/8/18 17:31
  */
-public class Page implements Serializable {
+public class Page<T> implements Serializable,Iterable<T> {
     private static final long serialVersionUID = 1L;
 
     //页大小
@@ -34,7 +33,7 @@ public class Page implements Serializable {
     // 总数
     private int totalRow;
 
-    private List<? extends BaseModel> list=new ArrayList<>();
+    private List<T> data=new ArrayList<>();
 
     public Page(){
         this.pageSize=10;
@@ -132,12 +131,18 @@ public class Page implements Serializable {
         init();
     }
 
-    public List<? extends BaseModel> getList() {
-        return list;
+    public List<T> getData() {
+        return data;
     }
 
-    public void setList(List<? extends BaseModel> list) {
-        this.list = list;
+    public void setData(List<T> data) {
+        this.data = data;
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        if(null==data)
+            return new ArrayList<T>().iterator();
+        return data.iterator();
+    }
 }
