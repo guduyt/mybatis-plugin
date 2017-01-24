@@ -1,7 +1,8 @@
 
 # 基于mysql的mybatis分页插件和mapping插件
 
-添加了基类BaseModel、BaseMapper、BaseExample，分页类Page，插件类PagePlugin。
+添加了基类BaseModel、BaseMapper、BasePKMapper、BaseExample，分页类Page
+，插件类PagePlugin,批量插入插件类BatchPlugin。
 
 目前只是在mybatis的mapper.xml中添加了一个selectPageByExample方法，用于分页查询。
 
@@ -89,9 +90,11 @@
 			UsersExample example=new UsersExample();
 			UsersExample.Criteria criteria= example.createCriteria();
 			criteria.andAgeBetween(20,65) ;
-			<!--当把page对象设置到example时才会生效；如果page在设置到example后又被修改了，需要重新在设置才会生效-->
-			example.setPage(page);
-			List<? extends BaseModel> list= usersMapper.selectByExample(example) ;
+			<!--当把page分页信息设置到example时才会生效；如果page分页信息在设置到example后又被修改了，需要重新在设置才会生效，只有调用selectPageByExample方法才会执行分页查询-->
+			Page page=new Page();
+            example.setCurrentPage(page.getCurrentPage());
+            example.setPageSize(page.getPageSize());
+			List<? extends BaseModel> list= usersMapper.selectPageByExample(example) ;
 		
 		
 		

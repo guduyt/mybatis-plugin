@@ -17,7 +17,7 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 /**
  * Created by yt on 2016-12-21.
  */
-public class CustomCommentGenerator implements CommentGenerator {
+public class FieldCommentGenerator implements CommentGenerator {
 
     private Properties properties;
 
@@ -29,7 +29,7 @@ public class CustomCommentGenerator implements CommentGenerator {
 
     private SimpleDateFormat dateFormat;
 
-    public CustomCommentGenerator(){
+    public FieldCommentGenerator(){
         super();
         this.properties = new Properties();
         this.suppressDate = false;

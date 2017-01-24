@@ -4,6 +4,7 @@ package com.yt.mybatis.generator;
 import com.yt.mybatis.model.BaseExample;
 import com.yt.mybatis.model.BaseMapper;
 import com.yt.mybatis.model.BaseModel;
+import com.yt.mybatis.model.BasePKMapper;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -107,14 +108,14 @@ public class PagePlugin extends PluginAdapter {
     /*让所有生成的modelExample类文件继承BaseExample类*/
     @Override
     public boolean modelExampleClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseExample"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType(BaseExample.class.getName()));
         topLevelClass.setSuperClass(BaseExample.class.getName());
         return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
     }
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        topLevelClass.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseModel"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType(BaseModel.class.getName()));
         topLevelClass.setSuperClass(BaseModel.class.getName());
         topLevelClass.addImportedType("javax.persistence.*");
         String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
@@ -142,20 +143,33 @@ public class PagePlugin extends PluginAdapter {
 
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        interfaze.addImportedType(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseMapper")); ;
-        interfaze.addSuperInterface(new FullyQualifiedJavaType("com.yt.mybatis.model.BaseMapper"));
+        if (introspectedTable.getAllColumns().size() == introspectedTable.getPrimaryKeyColumns().size()) {
+            throw new RuntimeException("不支持仅有主键的表自动生成代码");
+        }
+        String baseMapper=BaseMapper.class.getName();
+        if(introspectedTable.hasPrimaryKeyColumns())
+            baseMapper= BasePKMapper.class.getName();
+
+        interfaze.addImportedType(new FullyQualifiedJavaType(baseMapper)); ;
+        interfaze.addSuperInterface(new FullyQualifiedJavaType(baseMapper));
         Set<FullyQualifiedJavaType> set=interfaze.getSuperInterfaceTypes();
         Iterator<FullyQualifiedJavaType> iterator=set.iterator();
         while (iterator.hasNext()){
             FullyQualifiedJavaType fullyQualifiedJavaType=iterator.next();
-            if(fullyQualifiedJavaType.getFullyQualifiedName().equals(BaseMapper.class.getName())){
-                if(introspectedTable.getPrimaryKeyColumns().size()!=1){
-                    throw new RuntimeException("请确保数据表中只有一个主键字段，不支持联合主键") ;
-                }
 
-                FullyQualifiedJavaType type=(introspectedTable.getPrimaryKeyColumns().get(0)).getFullyQualifiedJavaType();
-                interfaze.addImportedType(type);
-                fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(type.getShortName()));
+            if(fullyQualifiedJavaType.getFullyQualifiedName().equals(baseMapper)){
+
+                FullyQualifiedJavaType type;
+                if (introspectedTable.getPrimaryKeyColumns().size() == 1) {
+                    IntrospectedColumn column = introspectedTable.getPrimaryKeyColumns().get(0);
+                    type = new FullyQualifiedJavaType(column.getFullyQualifiedJavaType().getFullyQualifiedName());
+                    interfaze.addImportedType(type);
+                    fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(type.getShortName()));
+                } else if (introspectedTable.getPrimaryKeyColumns().size() > 1) {
+                    type = new FullyQualifiedJavaType(introspectedTable.getPrimaryKeyType());
+                    interfaze.addImportedType(type);
+                    fullyQualifiedJavaType.addTypeArgument(new FullyQualifiedJavaType(type.getShortName()));
+                }
 
                 type=new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
                 interfaze.addImportedType(type);
@@ -166,6 +180,7 @@ public class PagePlugin extends PluginAdapter {
                 fullyQualifiedJavaType.addTypeArgument(type);
             }
         }
+
         return true;
     }
     public boolean clientCountByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
