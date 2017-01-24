@@ -70,7 +70,10 @@
           
 			<!--添加插件使用到MBG -->
 			<plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
-          
+            <plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
+
+            <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
+            </commentGenerator>
            <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">            
 				<!--其他配置省略；-->
 			</javaModelGenerator>
