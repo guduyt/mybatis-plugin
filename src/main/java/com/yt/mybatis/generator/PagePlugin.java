@@ -130,13 +130,15 @@ public class PagePlugin extends PluginAdapter {
             field.addAnnotation("@Column(name=\""+introspectedColumn.getActualColumnName()+"\")");
         }
 
-        Iterator<IntrospectedColumn> iterator=introspectedTable.getPrimaryKeyColumns().iterator();
-        IntrospectedColumn primaryKeyColumn=null;
-        while (iterator.hasNext()){
-            primaryKeyColumn= iterator.next();
-        }
-        if(null!=primaryKeyColumn && introspectedColumn.getActualColumnName().equals(primaryKeyColumn.getActualColumnName()))  {
-            field.addAnnotation("@Id");
+        if(introspectedTable.hasPrimaryKeyColumns()) {
+            Iterator<IntrospectedColumn> iterator = introspectedTable.getPrimaryKeyColumns().iterator();
+            IntrospectedColumn primaryKeyColumn = null;
+            while (iterator.hasNext()) {
+                primaryKeyColumn = iterator.next();
+            }
+            if (null != primaryKeyColumn && introspectedColumn.getActualColumnName().equals(primaryKeyColumn.getActualColumnName())) {
+                field.addAnnotation("@Id");
+            }
         }
         return super.modelFieldGenerated(field, topLevelClass, introspectedColumn, introspectedTable, modelClassType);
     }
