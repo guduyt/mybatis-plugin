@@ -110,7 +110,7 @@
 		criteria.andAgeBetween(20,65) ;
 		int size=usersMapper.countByExample(example);
 		<!--当把page分页信息设置到example时才会生效；如果page分页信息在设置到example后又被修改了，需要重新在设置才会生效，只有调用selectPageByExample方法才会执行分页查询-->
-
+		
             	page.setTotalRow(size);
            	example.setCurrentPage(page.getCurrentPage());
            	example.setPageSize(page.getPageSize());
