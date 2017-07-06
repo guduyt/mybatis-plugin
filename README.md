@@ -16,6 +16,13 @@
 
 	2.maven插件包配置pom.xml：
 
+           <!--包路径全局设置-->
+           <properties>
+                <package-path>com.entity.auto</package-path>
+                <java-file-path>${basedir}/src/main/java</java-file-path>
+                <resources-path>${basedir}/src/main/resources</resources-path>
+           </properties>
+
           <!--mybatis-plugin插件依赖-->
           <dependencies>
                  <dependency>
@@ -67,16 +74,24 @@
 	2.generatorConfig.xml配置：
 		<generatorConfiguration>
 			......
-          
+            <!-- 生产dao实体，不设置时不生成dao-->
+            <property name="daoPackage" value="${package-path}.dao"/>
+
 			<!--添加插件使用到MBG -->
 			<plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
             <plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
 
+            <!--生成实体添加注释 -->
             <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
             </commentGenerator>
-           <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">            
+            <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
 				<!--其他配置省略；-->
 			</javaModelGenerator>
+
+		    <!--对应的mapper.xml文件  -->
+            <sqlMapGenerator targetPackage="${package-path}.mapper" targetProject="${resources-path}">
+                <!--其他配置省略；-->
+            </sqlMapGenerator>
         
 			<javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
 				 <!--其他配置省略；-->
