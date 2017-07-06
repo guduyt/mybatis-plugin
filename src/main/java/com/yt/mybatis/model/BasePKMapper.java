@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * Created by yt on 2017-1-24.
  */
-public interface BasePKMapper <PK extends Serializable,Mode extends BaseModel,Example extends BaseExample> extends BaseMapper<Mode,Example> {
+public interface BasePKMapper <PK extends Serializable,Model extends BaseModel,Example extends BaseExample> extends BaseMapper<Model,Example> {
 
     int deleteByPrimaryKey(PK pk);
 
-    Mode selectByPrimaryKey(PK pk);
+    Model selectByPrimaryKey(PK pk);
 
-    int updateByPrimaryKeySelective(Mode record);
+    int updateByPrimaryKeySelective(Model record);
 
-    int updateByPrimaryKey(Mode record);
+    int updateByPrimaryKey(Model record);
 }

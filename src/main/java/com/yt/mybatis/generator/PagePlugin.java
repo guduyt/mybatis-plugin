@@ -1,22 +1,28 @@
 package com.yt.mybatis.generator;
 
 
-import com.yt.mybatis.model.BaseExample;
-import com.yt.mybatis.model.BaseMapper;
-import com.yt.mybatis.model.BaseModel;
-import com.yt.mybatis.model.BasePKMapper;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.api.dom.java.Field;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.Interface;
+import org.mybatis.generator.api.dom.java.Method;
+import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import com.yt.mybatis.dao.DaoCreator;
+import com.yt.mybatis.model.BaseExample;
+import com.yt.mybatis.model.BaseMapper;
+import com.yt.mybatis.model.BaseModel;
+import com.yt.mybatis.model.BasePKMapper;
 
 /**
  * PagePlugin
@@ -26,6 +32,7 @@ import java.util.Set;
  * @date 2016/8/18 15:12
  */
 public class PagePlugin extends PluginAdapter {
+    private static final String daoPackageProperty="daoPackage";
 
     @Override
     public boolean validate(List<String> list) {
@@ -130,7 +137,7 @@ public class PagePlugin extends PluginAdapter {
             field.addAnnotation("@Column(name=\""+introspectedColumn.getActualColumnName()+"\")");
         }
 
-        if(introspectedTable.hasPrimaryKeyColumns()) {
+        if(introspectedTable.hasPrimaryKeyColumns() && introspectedTable.getPrimaryKeyColumns().size()==1) {
             Iterator<IntrospectedColumn> iterator = introspectedTable.getPrimaryKeyColumns().iterator();
             IntrospectedColumn primaryKeyColumn = null;
             while (iterator.hasNext()) {
@@ -183,6 +190,12 @@ public class PagePlugin extends PluginAdapter {
             }
         }
 
+        String daoPackage=context.getProperty(daoPackageProperty);
+        if(null!=daoPackage){
+            DaoCreator creator = new DaoCreator(context,daoPackage);
+            creator.setTable(introspectedTable);
+            creator.exec();
+        }
         return true;
     }
     public boolean clientCountByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {

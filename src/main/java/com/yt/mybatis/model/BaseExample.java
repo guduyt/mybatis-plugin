@@ -9,12 +9,14 @@ package com.yt.mybatis.model;
  * @date 2016/8/18 17:19
  */
 public abstract class BaseExample {
-
     // 页大小
-    private int pageSize=10;
+    private int pageSize;
 
     // 当前页
-    private int currentPage=1;
+    private int currentPage;
+
+    // 总页数
+    private int totalPage;
 
     // 起始行
     private int startRow;
@@ -22,15 +24,30 @@ public abstract class BaseExample {
     // 结束行
     private int endRow;
 
-    protected  int limit;
+    // 总数
+    private int totalRow;
 
-    protected int offset;
+    // 开始行
+    private int limit;
 
+    // 查询数量
+    private int offset;
+
+    public BaseExample() {
+        this.pageSize = 10;
+        this.currentPage = 1;
+        this.totalRow = 0;
+        init();
+    }
+
+    /* 计算总页数、开始行、结束行 */
     private void init() {
+        this.totalPage = (this.getTotalRow() % this.pageSize) == 0 ? ((int) Math.floor(this.getTotalRow() / this.pageSize))
+                : ((int) Math.floor(this.getTotalRow() / this.pageSize) + 1);
         this.startRow = this.currentPage > 0 ? (this.currentPage - 1) * this.pageSize : 0;
         this.endRow = this.currentPage > 0 ? (this.currentPage) * this.pageSize : this.pageSize;
-        this.limit = this.pageSize;
-        this.offset = this.startRow;
+        this.limit = this.startRow;
+        this.offset = this.pageSize;
     }
 
     public int getPageSize() {
@@ -53,8 +70,20 @@ public abstract class BaseExample {
         if (currentPage < 1) {
             currentPage = 1;
         }
+
+        if (this.totalPage != 0 && currentPage >= this.totalPage) {
+            currentPage = this.totalPage;
+        }
         this.currentPage = currentPage;
         init();
+    }
+
+    public int getTotalPage() {
+        return this.totalPage == 0 ? 1 : this.totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
     }
 
     public int getStartRow() {
@@ -73,6 +102,16 @@ public abstract class BaseExample {
         this.endRow = endRow;
     }
 
+    public int getTotalRow() {
+        return totalRow;
+    }
+
+    public void setTotalRow(int totalRow) {
+        if (totalRow < 0)
+            totalRow = this.totalRow;
+        this.totalRow = totalRow;
+        init();
+    }
 
     public int getLimit() {
         return limit;
