@@ -77,45 +77,45 @@
             <!-- 生产dao实体，不设置时不生成dao-->
             <property name="daoPackage" value="${package-path}.dao"/>
 
-			<!--添加插件使用到MBG -->
-			<plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
+	    <!--添加插件使用到MBG -->
+	    <plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
             <plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
 
             <!--生成实体添加注释 -->
             <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
             </commentGenerator>
             <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
-				<!--其他配置省略；-->
-			</javaModelGenerator>
+		<!--其他配置省略；-->
+	    </javaModelGenerator>
 
-		    <!--对应的mapper.xml文件  -->
+	    <!--对应的mapper.xml文件  -->
             <sqlMapGenerator targetPackage="${package-path}.mapper" targetProject="${resources-path}">
                 <!--其他配置省略；-->
             </sqlMapGenerator>
         
-			<javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
-				 <!--其他配置省略；-->
-			</javaClientGenerator>
+	    <javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
+		<!--其他配置省略；-->
+	    </javaClientGenerator>
         ......
 	</generatorConfiguration>
 	
 	3.运行mybatis-generator-maven-plugin生成代码。
-		分页查询使用说明:
+	     分页查询使用说明:
 		
-			Page page=new Page();
-			page.setPageSize(20);
+		Page page=new Page();
+		page.setPageSize(20);
 			
-			UsersExample example=new UsersExample();
-			UsersExample.Criteria criteria= example.createCriteria();
-			criteria.andAgeBetween(20,65) ;
-			int size=usersMapper.countByExample(example);
-			<!--当把page分页信息设置到example时才会生效；如果page分页信息在设置到example后又被修改了，需要重新在设置才会生效，只有调用selectPageByExample方法才会执行分页查询-->
+		UsersExample example=new UsersExample();
+		UsersExample.Criteria criteria= example.createCriteria();
+		criteria.andAgeBetween(20,65) ;
+		int size=usersMapper.countByExample(example);
+		<!--当把page分页信息设置到example时才会生效；如果page分页信息在设置到example后又被修改了，需要重新在设置才会生效，只有调用selectPageByExample方法才会执行分页查询-->
 
-            page.setTotalRow(size);
-            example.setCurrentPage(page.getCurrentPage());
-            example.setPageSize(page.getPageSize());
-            List<SysUser> data= usersMapper.selectPageByExample(example);
-            page.setData(data);
+            	page.setTotalRow(size);
+           	example.setCurrentPage(page.getCurrentPage());
+           	example.setPageSize(page.getPageSize());
+           	List<SysUser> data= usersMapper.selectPageByExample(example);
+          	page.setData(data);
 		
 		
 		
