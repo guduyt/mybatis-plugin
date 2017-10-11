@@ -74,7 +74,7 @@ public class PagePlugin extends PluginAdapter {
         ifOrderByElement.addElement(new TextElement(" order by ${orderByClause} "));
         selectPageByExampleElement.addElement(ifOrderByElement);
 
-        selectPageByExampleElement.addElement(new TextElement("<![CDATA[LIMIT #{limit} OFFSET #{offset}]]>"));
+        selectPageByExampleElement.addElement(new TextElement("<![CDATA[LIMIT #{limit} , #{offset}]]>"));
 
         document.getRootElement().addElement(selectPageByExampleElement);
 
