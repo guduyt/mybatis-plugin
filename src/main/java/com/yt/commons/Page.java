@@ -12,14 +12,14 @@ import java.util.List;
  * @version 1.0.0
  * @date 2016/8/18 17:31
  */
-public class Page<T> implements Serializable,Iterable<T> {
+public class Page<T> implements Serializable, Iterable<T> {
     private static final long serialVersionUID = 1L;
 
     //页大小
-    private int pageSize;
+    private int pageSize = 10;
 
     //当前页
-    private int currentPage;
+    private int currentPage = 1;
 
     //总页数
     private int totalPage;
@@ -33,39 +33,30 @@ public class Page<T> implements Serializable,Iterable<T> {
     // 总数
     private int totalRow;
 
-    private List<T> data=new ArrayList<>();
+    private List<T> data = new ArrayList<>();
 
-    public Page(){
-        this.pageSize=10;
-        this.currentPage=1;
-        this.totalRow=0;
+    public Page() {
         init();
     }
 
-    public Page(int pageSize,int currentPage){
-        this.pageSize=10;
-        this.currentPage=1;
-        this.totalRow=0;
-        this.pageSize=pageSize;
-        this.currentPage=currentPage;
+    public Page(int pageSize, int currentPage) {
+        this.pageSize = pageSize;
+        this.currentPage = currentPage;
         init();
     }
 
-    public Page(int pageSize,int currentPage,int totalRow){
-        this.pageSize=10;
-        this.currentPage=1;
-        this.totalRow=0;
-        this.pageSize=pageSize;
-        this.currentPage=currentPage;
-        this.totalRow=totalRow;
+    public Page(int pageSize, int currentPage, int totalRow) {
+        this.pageSize = pageSize;
+        this.currentPage = currentPage;
+        this.totalRow = totalRow;
         init();
     }
 
     /*计算总页数、开始行、结束行*/
-    private void init(){
-        this.totalPage= (this.getTotalRow()%this.pageSize)==0?((int)Math.floor(this.getTotalRow()/this.pageSize)):((int)Math.floor(this.getTotalRow()/this.pageSize)+1);
-        this.startRow=this.currentPage>0?(this.currentPage-1)*this.pageSize:0;
-        this.endRow=this.currentPage>0?(this.currentPage)*this.pageSize:this.pageSize;
+    private void init() {
+        this.totalPage = (this.getTotalRow() % this.pageSize) == 0 ? ((int) Math.floor(this.getTotalRow() / this.pageSize)) : ((int) Math.floor(this.getTotalRow() / this.pageSize) + 1);
+        this.startRow = this.currentPage > 0 ? (this.currentPage - 1) * this.pageSize : 0;
+        this.endRow = this.currentPage > 0 ? (this.currentPage) * this.pageSize : this.pageSize;
     }
 
     public int getPageSize() {
@@ -73,9 +64,9 @@ public class Page<T> implements Serializable,Iterable<T> {
     }
 
     public void setPageSize(int pageSize) {
-          if(pageSize<0){
-              pageSize=10;
-          }
+        if (pageSize < 0) {
+            pageSize = 10;
+        }
         this.pageSize = pageSize;
         init();
     }
@@ -85,19 +76,19 @@ public class Page<T> implements Serializable,Iterable<T> {
     }
 
     public void setCurrentPage(int currentPage) {
-        if(currentPage<1){
-            currentPage=1;
+        if (currentPage < 1) {
+            currentPage = 1;
         }
 
-        if(this.totalPage !=0 &&currentPage>=this.totalPage){
-            currentPage=this.totalPage;
+        if (this.totalPage != 0 && currentPage >= this.totalPage) {
+            currentPage = this.totalPage;
         }
         this.currentPage = currentPage;
         init();
     }
 
     public int getTotalPage() {
-        return this.totalPage==0?1:this.totalPage;
+        return this.totalPage == 0 ? 1 : this.totalPage;
     }
 
     public void setTotalPage(int totalPage) {
@@ -125,8 +116,8 @@ public class Page<T> implements Serializable,Iterable<T> {
     }
 
     public void setTotalRow(int totalRow) {
-        if(totalRow<0)
-            totalRow=this.totalRow;
+        if (totalRow < 0)
+            totalRow = this.totalRow;
         this.totalRow = totalRow;
         init();
     }
@@ -141,7 +132,7 @@ public class Page<T> implements Serializable,Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        if(null==data)
+        if (null == data)
             return new ArrayList<T>().iterator();
         return data.iterator();
     }

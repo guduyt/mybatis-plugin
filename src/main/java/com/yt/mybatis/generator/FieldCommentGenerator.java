@@ -11,6 +11,7 @@ import org.mybatis.generator.internal.util.StringUtility;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Set;
 
 import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
@@ -62,12 +63,12 @@ public class FieldCommentGenerator implements CommentGenerator {
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
         field.addJavaDocLine("/**");
         if(StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
             field.addJavaDocLine("* "+introspectedColumn.getRemarks());
         }
-        /*sb.append("*字段:");
+        /*StringBuilder sb = new StringBuilder();
+        sb.append("*字段:");
         sb.append(introspectedTable.getFullyQualifiedTable());
         sb.append('.');
         sb.append(introspectedColumn.getActualColumnName());
@@ -128,6 +129,31 @@ public class FieldCommentGenerator implements CommentGenerator {
 
     @Override
     public void addRootComment(XmlElement rootElement) {
+
+    }
+
+    @Override
+    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
+        
+    }
+
+    @Override
+    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
+
+    }
+
+    @Override
+    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
+
+    }
+
+    @Override
+    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
+
+    }
+
+    @Override
+    public void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
 
     }
 
