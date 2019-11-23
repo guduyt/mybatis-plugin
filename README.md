@@ -72,35 +72,35 @@
           </plugins>
           
 	2.generatorConfig.xml配置：
-	<generatorConfiguration>
+		<generatorConfiguration>
 		......
-	<!-- 生产dao实体，不设置时不生成dao-->
-	<property name="daoPackage" value="${package-path}.dao"/>
+		<!-- 生产dao实体，不设置时不生成dao-->
+		<property name="daoPackage" value="${package-path}.dao"/>
 
-	<!--添加插件使用到MBG -->
+		<!--添加插件使用到MBG -->
 
-	<!--覆盖生成XML文件 -->
-	<plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"></plugin>
-	<plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
-	<plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
+		<!--覆盖生成XML文件 -->
+		<plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"></plugin>
+		<plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
+		<plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
 
-        <!--生成实体添加注释 -->
-        <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
-        </commentGenerator>
-        <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
+		<!--生成实体添加注释 -->
+		<commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
+		</commentGenerator>
+		<javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
 		<!--其他配置省略；-->
-	    </javaModelGenerator>
+		</javaModelGenerator>
 
-	    <!--对应的mapper.xml文件  -->
-            <sqlMapGenerator targetPackage="${package-path}.mapper" targetProject="${resources-path}">
-                <!--其他配置省略；-->
-            </sqlMapGenerator>
-        
-	    <javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
+		<!--对应的mapper.xml文件  -->
+		<sqlMapGenerator targetPackage="${package-path}.mapper" targetProject="${resources-path}">
 		<!--其他配置省略；-->
-	    </javaClientGenerator>
-        ......
-	</generatorConfiguration>
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER" targetPackage="${package-path}.mapper" targetProject="${java-file-path}">
+		<!--其他配置省略；-->
+		</javaClientGenerator>
+		......
+		</generatorConfiguration>
 	
 	3.运行mybatis-generator-maven-plugin生成代码。
 	     分页查询使用说明:
