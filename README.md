@@ -43,7 +43,7 @@
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.3</version>
+                <version>1.3.7</version>
                 <configuration>
                     <configurationFile>src/main/resources/config/generatorConfig.xml</configurationFile>
                     <verbose>true</verbose>
@@ -54,7 +54,7 @@
                     <dependency>
                         <groupId>org.mybatis</groupId>
                         <artifactId>mybatis</artifactId>
-                        <version>3.4.0</version>
+                        <version>3.4.6</version>
                     </dependency>
                     <dependency>
                         <groupId>mysql</groupId>
@@ -78,13 +78,16 @@
             <property name="daoPackage" value="${package-path}.dao"/>
 
 	    <!--添加插件使用到MBG -->
+	    
+	    <!--覆盖生成XML文件 -->
+	    <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"></plugin>
 	    <plugin type="com.yt.mybatis.generator.PagePlugin"></plugin>
-            <plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
+        <plugin type="com.yt.mybatis.generator.BatchPlugin"></plugin>
 
-            <!--生成实体添加注释 -->
-            <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
-            </commentGenerator>
-            <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
+        <!--生成实体添加注释 -->
+        <commentGenerator type="com.yt.mybatis.generator.FieldCommentGenerator">
+        </commentGenerator>
+        <javaModelGenerator targetPackage="${package-path}.model" targetProject="${java-file-path}">
 		<!--其他配置省略；-->
 	    </javaModelGenerator>
 
@@ -111,11 +114,11 @@
 		int size=usersMapper.countByExample(example);
 		<!--当把page分页信息设置到example时才会生效；如果page分页信息在设置到example后又被修改了，需要重新在设置才会生效，只有调用selectPageByExample方法才会执行分页查询-->
 		
-            	page.setTotalRow(size);
-           	example.setCurrentPage(page.getCurrentPage());
-           	example.setPageSize(page.getPageSize());
-           	List<SysUser> data= usersMapper.selectPageByExample(example);
-          	page.setData(data);
+        page.setTotalRow(size);
+        example.setCurrentPage(page.getCurrentPage());
+        example.setPageSize(page.getPageSize());
+        List<SysUser> data= usersMapper.selectPageByExample(example);
+        page.setData(data);
 		
 		
 		
