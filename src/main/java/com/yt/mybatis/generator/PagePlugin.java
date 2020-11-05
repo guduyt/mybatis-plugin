@@ -1,10 +1,11 @@
 package com.yt.mybatis.generator;
 
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.yt.mybatis.dao.DaoCreator;
+import com.yt.mybatis.model.BaseExample;
+import com.yt.mybatis.model.BaseMapper;
+import com.yt.mybatis.model.BaseModel;
+import com.yt.mybatis.model.BasePKMapper;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -18,11 +19,9 @@ import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
-import com.yt.mybatis.dao.DaoCreator;
-import com.yt.mybatis.model.BaseExample;
-import com.yt.mybatis.model.BaseMapper;
-import com.yt.mybatis.model.BaseModel;
-import com.yt.mybatis.model.BasePKMapper;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * PagePlugin
@@ -124,16 +123,16 @@ public class PagePlugin extends PluginAdapter {
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         topLevelClass.addImportedType(new FullyQualifiedJavaType(BaseModel.class.getName()));
         topLevelClass.setSuperClass(BaseModel.class.getName());
-        topLevelClass.addImportedType("javax.persistence.*");
+        /*topLevelClass.addImportedType("javax.persistence.*");
         String tableName = introspectedTable.getFullyQualifiedTableNameAtRuntime();
         topLevelClass.addAnnotation("@Entity");
-        topLevelClass.addAnnotation("@Table(name = \"" + tableName + "\")");
+        topLevelClass.addAnnotation("@Table(name = \"" + tableName + "\")");*/
         return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
     }
 
     @Override
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
-        if(introspectedColumn.getActualColumnName()!=null &&introspectedColumn.getActualColumnName().length()>0) {
+        /*if(introspectedColumn.getActualColumnName()!=null &&introspectedColumn.getActualColumnName().length()>0) {
             field.addAnnotation("@Column(name=\""+introspectedColumn.getActualColumnName()+"\")");
         }
 
@@ -146,7 +145,7 @@ public class PagePlugin extends PluginAdapter {
             if (null != primaryKeyColumn && introspectedColumn.getActualColumnName().equals(primaryKeyColumn.getActualColumnName())) {
                 field.addAnnotation("@Id");
             }
-        }
+        }*/
         return super.modelFieldGenerated(field, topLevelClass, introspectedColumn, introspectedTable, modelClassType);
     }
 

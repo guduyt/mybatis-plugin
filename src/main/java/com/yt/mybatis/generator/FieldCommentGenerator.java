@@ -65,14 +65,14 @@ public class FieldCommentGenerator implements CommentGenerator {
 
         field.addJavaDocLine("/**");
         if(StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("* 字段:");
+            sb.append(introspectedTable.getFullyQualifiedTable());
+            sb.append('.');
+            sb.append(introspectedColumn.getActualColumnName());
+            field.addJavaDocLine(sb.toString());
             field.addJavaDocLine("* "+introspectedColumn.getRemarks());
         }
-        /*StringBuilder sb = new StringBuilder();
-        sb.append("*字段:");
-        sb.append(introspectedTable.getFullyQualifiedTable());
-        sb.append('.');
-        sb.append(introspectedColumn.getActualColumnName());
-        field.addJavaDocLine(sb.toString());*/
         field.addJavaDocLine("*/");
 
 
@@ -85,6 +85,19 @@ public class FieldCommentGenerator implements CommentGenerator {
 
     @Override
     public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+         /*添加数据库表字段注释*/
+        if(suppressAllComments){
+            return;
+        }
+        if(StringUtility.stringHasValue(introspectedTable.getRemarks())){
+            topLevelClass.addJavaDocLine("/**");
+            StringBuilder sb = new StringBuilder();
+            sb.append("* 数据表:");
+            sb.append(introspectedTable.getFullyQualifiedTable());
+            topLevelClass.addJavaDocLine(sb.toString());
+            topLevelClass.addJavaDocLine("* "+introspectedTable.getRemarks());
+            topLevelClass.addJavaDocLine("*/");
+        }
 
     }
 
