@@ -1,10 +1,10 @@
 package com.yt.mybatis.dao;
 
-import java.util.List;
-
 import com.yt.commons.Page;
 import com.yt.mybatis.model.BaseExample;
 import com.yt.mybatis.model.BaseModel;
+
+import java.util.List;
 
 /**
  * Created by yt on 2017-7-6.
@@ -14,7 +14,7 @@ public interface BaseDao<Model extends BaseModel, Example extends BaseExample> {
 
 	List<Model> selectPageByExample(Example example);
 
-	int countByExample(Example example);
+	long countByExample(Example example);
 
 	int deleteByExample(Example example);
 

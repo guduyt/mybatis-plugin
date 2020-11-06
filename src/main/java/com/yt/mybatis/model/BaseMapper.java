@@ -1,8 +1,8 @@
 package com.yt.mybatis.model;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * BaseMapper
@@ -19,7 +19,7 @@ public interface BaseMapper<Model extends BaseModel,Example extends BaseExample>
 	/*批量插入使用*/
     int insertBatch(List<Model> list);
 
-    int countByExample(Example example);
+    long countByExample(Example example);
 
     int deleteByExample(Example example);
 
