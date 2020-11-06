@@ -28,12 +28,12 @@
                  <dependency>
                       <groupId>com.yt</groupId>
                       <artifactId>mybatis-plugin</artifactId>
-                      <version>1.0-SNAPSHOT</version>
+                      <version>1.0.1-SNAPSHOT</version>
                  </dependency>
                  <dependency>
-                     <groupId>javax.persistence</groupId>
-                     <artifactId>persistence-api</artifactId>
-                     <version>1.0.2</version>
+                     <groupId>jakarta.persistence</groupId>
+                     <artifactId>jakarta.persistence-api</artifactId>
+                     <version>3.0.0</version>
                  </dependency>
           </dependencies>
           ......
@@ -59,13 +59,13 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.29</version>
+                        <version>8.0.19</version>
                     </dependency>
                     <!--mybatis-plugin插件使用配置 -->
                     <dependency>
                         <groupId>com.yt</groupId>
                         <artifactId>mybatis-plugin</artifactId>
-                        <version>1.0-SNAPSHOT</version>
+                        <version>1.0.1-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -1,5 +1,8 @@
 package com.yt.mybatis.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * BaseModel
  *
@@ -8,4 +11,8 @@ package com.yt.mybatis.model;
  * @date 2016/8/19 12:57
  */
 public abstract class BaseModel {
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 }
