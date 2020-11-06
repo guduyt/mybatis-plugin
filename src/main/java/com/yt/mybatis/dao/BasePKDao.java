@@ -15,7 +15,7 @@ public interface BasePKDao<PK extends Serializable, Model extends BaseModel, Exa
 
 	List<Model> selectPageByExample(Example example);
 
-	int countByExample(Example example);
+	long countByExample(Example example);
 
 	int deleteByExample(Example example);
 

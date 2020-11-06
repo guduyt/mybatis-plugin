@@ -25,13 +25,13 @@ public class Page<T> implements Serializable, Iterable<T> {
     private int totalPage;
 
     //起始行
-    private int startRow;
+    private long startRow;
 
     //结束行
-    private int endRow;
+    private long endRow;
 
     // 总数
-    private int totalRow;
+    private long totalRow;
 
     private List<T> data = new ArrayList<>();
 
@@ -95,27 +95,27 @@ public class Page<T> implements Serializable, Iterable<T> {
         this.totalPage = totalPage;
     }
 
-    public int getStartRow() {
+    public long getStartRow() {
         return startRow;
     }
 
-    public void setStartRow(int startRow) {
+    public void setStartRow(long startRow) {
         this.startRow = startRow;
     }
 
-    public int getEndRow() {
+    public long getEndRow() {
         return endRow;
     }
 
-    public void setEndRow(int endRow) {
+    public void setEndRow(long endRow) {
         this.endRow = endRow;
     }
 
-    public int getTotalRow() {
+    public long getTotalRow() {
         return totalRow;
     }
 
-    public void setTotalRow(int totalRow) {
+    public void setTotalRow(long totalRow) {
         if (totalRow < 0)
             totalRow = this.totalRow;
         this.totalRow = totalRow;

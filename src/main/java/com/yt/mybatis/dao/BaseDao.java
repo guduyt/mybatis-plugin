@@ -14,7 +14,7 @@ public interface BaseDao<Model extends BaseModel, Example extends BaseExample> {
 
 	List<Model> selectPageByExample(Example example);
 
-	int countByExample(Example example);
+	long countByExample(Example example);
 
 	int deleteByExample(Example example);
 

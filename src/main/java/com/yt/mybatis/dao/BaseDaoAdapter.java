@@ -22,7 +22,7 @@ public abstract class BaseDaoAdapter<Model extends BaseModel, Example extends Ba
 	}
 
 	public Page<Model> queryOfPage(Example example) {
-		int cnt = getMapper().countByExample(example);
+		long cnt = getMapper().countByExample(example);
 
 		Page<Model> page = new Page<>();
 		page.setCurrentPage(example.getCurrentPage());
@@ -43,7 +43,7 @@ public abstract class BaseDaoAdapter<Model extends BaseModel, Example extends Ba
 	}
 
 	@Override
-	public int countByExample(Example example) {
+	public long countByExample(Example example) {
 		return getMapper().countByExample(example);
 	}
 
